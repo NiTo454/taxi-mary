@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../src/components/Navbar';
 import ProfileHeader from '../src/components/ProfileHeader';
+import SplashScreen from '../src/components/SplashScreen';
 import WhatsAppButton from '../src/components/WhatsAppButton';
 import CallButton from '../src/components/CallButton';
 import PaymentMethods from '../src/components/PaymentMethods';
@@ -10,9 +11,47 @@ import Tarjeta from './tarjeta';
 
 export default function Home() {
   const [mostrarTarjeta, setMostrarTarjeta] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
+  useEffect(() => {
+    // 1. Tiempo mínimo para que la animación se aprecie bien (1.5 segundos)
+    const minTimePromise = new Promise(resolve => setTimeout(resolve, 1500));
+
+    // 2. Promesa vinculada al evento de carga real de la ventana (imágenes, scripts, etc.)
+    let handleLoad: () => void;
+    const loadPromise = new Promise(resolve => {
+      if (document.readyState === 'complete') {
+        resolve(true);
+      } else {
+        handleLoad = () => resolve(true);
+        window.addEventListener('load', handleLoad);
+      }
+    });
+
+    // 3. Esperamos a que se cumplan AMBAS: la carga real y el tiempo mínimo
+    Promise.all([minTimePromise, loadPromise]).then(() => {
+      setIsFadingOut(true); // Comienza la transición CSS (fade-out)
+      setTimeout(() => {
+        setIsLoading(false); // Quitamos la pantalla de carga del DOM
+      }, 500); // 500ms coinciden con el duration-500 de Tailwind
+    });
+
+    return () => {
+      if (handleLoad) window.removeEventListener('load', handleLoad);
+    };
+  }, []);
 
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-pink-500/30 selection:text-pink-200 flex flex-col">
+    <>
+      {/* Pantalla de carga superpuesta (Overlay real) */}
+      {isLoading && (
+        <SplashScreen isFadingOut={isFadingOut} />
+      )}
+
+      {/* Contenido principal de la página.
+          Evitamos el scroll ('h-screen overflow-hidden') mientras la capa de carga está activa */}
+      <main className={`min-h-screen bg-black text-white selection:bg-pink-500/30 selection:text-pink-200 flex flex-col ${isLoading ? 'h-screen overflow-hidden' : ''}`}>
       <Navbar
         onShowTarjeta={() => setMostrarTarjeta(true)}
         onHome={() => setMostrarTarjeta(false)}
@@ -59,5 +98,6 @@ export default function Home() {
 
       <Footer />
     </main>
+    </>
   );
 }
