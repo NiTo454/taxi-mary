@@ -2,59 +2,58 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../src/components/Navbar';
 import ProfileHeader from '../src/components/ProfileHeader';
-import SplashScreen from '../src/components/SplashScreen';
 import WhatsAppButton from '../src/components/WhatsAppButton';
 import CallButton from '../src/components/CallButton';
 import PaymentMethods from '../src/components/PaymentMethods';
 import Footer from '../src/components/Footer';
 import Tarjeta from './tarjeta';
+import PageLoader from '../src/components/PageLoader';
 
 export default function Home() {
   const [mostrarTarjeta, setMostrarTarjeta] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFadingOut, setIsFadingOut] = useState(false);
 
+  // 1. Controlar el botón de retroceso (Back button) del navegador
   useEffect(() => {
-    // 1. Tiempo mínimo para que la animación se aprecie bien (1.5 segundos)
-    const minTimePromise = new Promise(resolve => setTimeout(resolve, 1500));
-
-    // 2. Promesa vinculada al evento de carga real de la ventana (imágenes, scripts, etc.)
-    let handleLoad: () => void;
-    const loadPromise = new Promise(resolve => {
-      if (document.readyState === 'complete') {
-        resolve(true);
-      } else {
-        handleLoad = () => resolve(true);
-        window.addEventListener('load', handleLoad);
-      }
-    });
-
-    // 3. Esperamos a que se cumplan AMBAS: la carga real y el tiempo mínimo
-    Promise.all([minTimePromise, loadPromise]).then(() => {
-      setIsFadingOut(true); // Comienza la transición CSS (fade-out)
-      setTimeout(() => {
-        setIsLoading(false); // Quitamos la pantalla de carga del DOM
-      }, 500); // 500ms coinciden con el duration-500 de Tailwind
-    });
-
-    return () => {
-      if (handleLoad) window.removeEventListener('load', handleLoad);
+    const handlePopState = () => {
+      // Si el hash es #tarjeta, mostramos la tarjeta. Si no, volvemos al inicio.
+      setMostrarTarjeta(window.location.hash === '#tarjeta');
     };
+
+    // Revisar el hash al cargar por primera vez
+    handlePopState();
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // 2. Función para ir a la tarjeta y añadirlo al historial del navegador
+  const openTarjeta = () => {
+    if (window.location.hash !== '#tarjeta') {
+      window.history.pushState(null, '', '#tarjeta');
+    }
+    setMostrarTarjeta(true);
+  };
+
+  // 3. Función para regresar al inicio (como si presionaran "Atrás" en el navegador)
+  const closeTarjeta = () => {
+    if (window.location.hash === '#tarjeta') {
+      window.history.back(); // Esto dispara el 'popstate' y oculta la tarjeta suavemente
+    } else {
+      setMostrarTarjeta(false);
+    }
+  };
 
   return (
     <>
-      {/* Pantalla de carga superpuesta (Overlay real) */}
-      {isLoading && (
-        <SplashScreen isFadingOut={isFadingOut} />
-      )}
+      {/* Pantalla de carga superpuesta automatizada.
+          El atributo 'key' obliga a React a reiniciar la animación cada vez que la vista cambia. */}
+      <PageLoader key={mostrarTarjeta ? 'tarjeta' : 'inicio'} />
 
-      {/* Contenido principal de la página.
-          Evitamos el scroll ('h-screen overflow-hidden') mientras la capa de carga está activa */}
-      <main className={`min-h-screen bg-black text-white selection:bg-pink-500/30 selection:text-pink-200 flex flex-col ${isLoading ? 'h-screen overflow-hidden' : ''}`}>
+      {/* Contenido principal de la página. */}
+      <main className="min-h-screen bg-black text-white selection:bg-pink-500/30 selection:text-pink-200 flex flex-col">
       <Navbar
-        onShowTarjeta={() => setMostrarTarjeta(true)}
-        onHome={() => setMostrarTarjeta(false)}
+        onShowTarjeta={openTarjeta}
+        onHome={closeTarjeta}
       />
 
       {/* Contenedor centralizado para la tarjeta */}
@@ -90,8 +89,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="w-full max-w-sm relative animate-slide-up z-10">
-            {/* La tarjeta ahora maneja su propio botón llamando a setMostrarTarjeta(false) */}
-            <Tarjeta onClose={() => setMostrarTarjeta(false)} />
+            {/* La tarjeta usa la función closeTarjeta para manejar correctamente el historial */}
+            <Tarjeta onClose={closeTarjeta} />
           </div>
         )}
       </div>

@@ -41,22 +41,27 @@ export default function Footer() {
         </div>
 
         {/* 💻 NUEVA FIRMA: Insignia visible y clickeable de Syntaxis Lab */}
-        <a
-          href="TU_ENLACE_A_CATALOGO_O_WHATSAPP" /* <-- Pon aquí tu link de Meta Business o WhatsApp */
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:bg-white/10 hover:border-fuchsia-500/40 hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] hover:-translate-y-1 transition-all duration-300"
-        >
-          {/* Icono de desarrollo (Código) */}
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-fuchsia-400 drop-shadow-[0_0_5px_rgba(232,121,249,0.8)] group-hover:text-[#ff7f50] transition-colors">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
+        <div className="relative group">
+          {/* Resplandor animado de fondo para llamar la atención sutilmente */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-[#ff7f50] rounded-full blur opacity-30 animate-pulse group-hover:opacity-60 transition duration-500"></div>
 
-          <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-white/80 group-hover:text-white transition-colors">
-            Desarrollado por <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-500 to-[#ff7f50] drop-shadow-[0_0_8px_rgba(236,72,153,0.3)]">Syntaxis Lab</span>
-          </span>
-        </a>
+          <a
+            href="https://sintaxis-lab-gamma.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:bg-white/10 hover:border-fuchsia-500/40 hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] hover:-translate-y-1 transition-all duration-300"
+          >
+            {/* Icono de desarrollo (Código) */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-fuchsia-400 drop-shadow-[0_0_5px_rgba(232,121,249,0.8)] group-hover:text-[#ff7f50] transition-colors">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-white/80 group-hover:text-white transition-colors">
+              Desarrollado por <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-500 to-[#ff7f50] drop-shadow-[0_0_8px_rgba(236,72,153,0.3)]">Syntaxis Lab</span>
+            </span>
+          </a>
+        </div>
 
       </div>
 

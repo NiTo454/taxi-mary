@@ -1,9 +1,33 @@
+'use client';
+
 export default function CallButton() {
   // Número de teléfono con el código de país
   const numeroTelefono = "+525613912371";
 
+  // Función para generar y descargar el contacto (vCard)
+  const descargarContacto = () => {
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:Mary;Taxi;;;
+FN:Taxi Mary
+ORG:Transporte Seguro Tizayuca
+TEL;TYPE=CELL,VOICE:+525613912371
+URL:https://taxi-mary.vercel.app/
+END:VCARD`;
+
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Taxi_Mary.vcf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-4">
       <a
         href={`tel:${numeroTelefono}`}
         className="group relative flex items-center justify-center w-full bg-[#121212] border border-pink-500/50 hover:bg-pink-500/10 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(236,72,153,0.1)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:scale-105 overflow-hidden"
@@ -15,6 +39,20 @@ export default function CallButton() {
 
         <span className="tracking-wide">Llamar ahora</span>
       </a>
+
+      {/* Botón de Guardar Contacto (vCard) */}
+      <button
+        onClick={descargarContacto}
+        className="group relative flex items-center justify-center w-full bg-[#121212] border border-violet-500/50 hover:bg-violet-500/10 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.1)] hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:scale-105 overflow-hidden"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3 text-violet-400 group-hover:scale-110 transition-transform">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" x2="19" y1="8" y2="14"/>
+          <line x1="22" x2="16" y1="11" y2="11"/>
+        </svg>
+        <span className="tracking-wide">Guardar Contacto</span>
+      </button>
     </div>
   );
 }
