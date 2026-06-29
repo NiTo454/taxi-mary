@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
-import animationData from '../../public/d1821cfa-117f-11ee-b660-17c58d4d74ba.json';
+import animationData from '../../public/mariposas-spinner.json';
 
 interface SplashScreenProps {
   isFadingOut: boolean;
