@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { TAXI_INFO } from '../config/info';
 
 interface NavbarProps {
   onShowTarjeta?: () => void;
@@ -7,6 +8,9 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onShowTarjeta, onHome }: NavbarProps) {
+  const brandParts = TAXI_INFO.brandName.split(' ');
+  const brandFirst = brandParts[0].toUpperCase();
+  const brandRest = brandParts.slice(1).join(' ').toUpperCase();
   return (
     <nav className="w-full fixed top-0 z-50 bg-[#050505]/60 backdrop-blur-2xl border-b border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all">
 
@@ -36,7 +40,7 @@ export default function Navbar({ onShowTarjeta, onHome }: NavbarProps) {
 
           {/* Título con gradiente coherente */}
           <span className="font-extrabold text-lg tracking-wider text-white transition-colors drop-shadow-md">
-            TAXI <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff7f50] via-fuchsia-500 to-violet-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]">MARY</span>
+            {brandFirst} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff7f50] via-fuchsia-500 to-violet-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]">{brandRest}</span>
           </span>
         </Link>
 

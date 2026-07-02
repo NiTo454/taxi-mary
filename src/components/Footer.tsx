@@ -12,8 +12,13 @@ export default function Footer() {
         <div className="absolute top-0 w-1/2 max-w-xs h-[1px] bg-fuchsia-400 blur-[3px] opacity-50"></div>
       </div>
 
-      {/* 📍 Indicador de Ubicación */}
-      <div className="flex items-center gap-2 mb-7 group cursor-default bg-white/[0.02] border border-white/[0.05] px-4 py-1.5 rounded-full backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.2)] transition-all duration-500 hover:bg-white/[0.04] hover:border-fuchsia-500/20 hover:-translate-y-0.5">
+      {/* 📍 Indicador de Ubicación Clickeable */}
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=Tizayuca+Hidalgo"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 mb-7 group cursor-pointer bg-white/[0.02] border border-white/[0.05] px-4 py-1.5 rounded-full backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.2)] transition-all duration-500 hover:bg-white/[0.04] hover:border-fuchsia-500/30 hover:shadow-[0_0_15px_rgba(217,70,239,0.2)] hover:-translate-y-0.5 active:scale-95"
+      >
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 bg-fuchsia-500 rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
           <svg
@@ -29,7 +34,7 @@ export default function Footer() {
         <p className="text-white/40 text-[10px] sm:text-xs tracking-[0.2em] uppercase font-semibold group-hover:text-white/80 transition-colors duration-300 drop-shadow-sm">
           Cobertura en Tizayuca
         </p>
-      </div>
+      </a>
 
       {/* ©️ Copyright y Firma de Agencia */}
       <div className="flex flex-col items-center gap-5">

@@ -1,13 +1,21 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
-import animationData from '../../public/mariposas-spinner.json';
 
 interface SplashScreenProps {
   isFadingOut: boolean;
 }
 
 export default function SplashScreen({ isFadingOut }: SplashScreenProps) {
+  const [animationData, setAnimationData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/mariposas-spinner.json')
+      .then(res => res.json())
+      .then(data => setAnimationData(data))
+      .catch(err => console.error("Error al cargar la animación Lottie:", err));
+  }, []);
+
   return (
     <div
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] overflow-hidden transition-all duration-700 ease-in-out ${
@@ -25,12 +33,16 @@ export default function SplashScreen({ isFadingOut }: SplashScreenProps) {
         {/* Contenedor del Lottie */}
         <div className="relative w-72 h-56 flex items-center justify-center drop-shadow-[0_0_35px_rgba(236,72,153,0.4)]">
 
-          <Lottie
-            animationData={animationData}
-            loop={true}
-            autoplay={true}
-            className="w-full h-full object-contain"
-          />
+          {animationData ? (
+            <Lottie
+              animationData={animationData}
+              loop={true}
+              autoplay={true}
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="w-12 h-12 border-2 border-fuchsia-500/20 border-t-fuchsia-500 rounded-full animate-spin"></div>
+          )}
 
         </div>
 

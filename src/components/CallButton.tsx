@@ -1,18 +1,18 @@
 'use client';
+import { TAXI_INFO } from '../config/info';
 
 export default function CallButton() {
-  // Número de teléfono con el código de país
-  const numeroTelefono = "+525613912371";
+  const numeroTelefono = TAXI_INFO.phone.full;
 
   // Función para generar y descargar el contacto (vCard)
   const descargarContacto = () => {
     const vcard = `BEGIN:VCARD
 VERSION:3.0
 N:Mary;Taxi;;;
-FN:Taxi Mary
-ORG:Transporte Seguro Tizayuca
-TEL;TYPE=CELL,VOICE:+525613912371
-URL:https://taxi-mary.vercel.app/
+FN:${TAXI_INFO.brandName}
+ORG:${TAXI_INFO.tagline} ${TAXI_INFO.coverage}
+TEL;TYPE=CELL,VOICE:${TAXI_INFO.phone.full}
+URL:${TAXI_INFO.websiteUrl}
 END:VCARD`;
 
     const blob = new Blob([vcard], { type: 'text/vcard' });

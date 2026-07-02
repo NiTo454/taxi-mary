@@ -1,7 +1,19 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { TAXI_INFO } from '../config/info';
+
 export default function WhatsAppButton() {
-  // Número de WhatsApp con el código de país (52 para México)
-  const numeroWhatsApp = "525613912371";
-  const mensaje = "Hola Mary, me gustaría solicitar un viaje por favor.";
+  const numeroWhatsApp = TAXI_INFO.phone.raw;
+  const [mensaje, setMensaje] = useState(TAXI_INFO.whatsapp.message);
+
+  useEffect(() => {
+    const hora = new Date().getHours();
+    let saludo = 'buenas noches';
+    if (hora >= 6 && hora < 12) saludo = 'buenos días';
+    else if (hora >= 12 && hora < 19) saludo = 'buenas tardes';
+    
+    setMensaje(`Hola Mary, ${saludo}. Me gustaría solicitar un viaje por favor.`);
+  }, []);
 
   return (
     <div className="w-full">

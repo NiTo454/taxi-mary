@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { TAXI_INFO } from '../config/info';
 
 export default function PaymentMethods() {
   const [copiado, setCopiado] = useState<string>('');
@@ -83,14 +84,14 @@ export default function PaymentMethods() {
         <div className="relative z-10 flex flex-col gap-2 mt-auto">
           {/* Número con resplandor sutil */}
           <p className="font-mono text-[17px] min-[375px]:text-[18px] sm:text-[20px] tracking-[0.12em] text-gray-50 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
-            012 180 0155 3816 6209
+            {TAXI_INFO.bank.clabe}
           </p>
 
           <div className="flex justify-between items-end">
             <div className="flex flex-col">
               <span className="text-[9px] uppercase tracking-widest text-blue-200/80 mb-0.5">Titular</span>
               <span className="text-xs font-bold uppercase tracking-widest text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                Marisela Maldonado
+                {TAXI_INFO.driverName}
               </span>
             </div>
             {/* Etiqueta CLABE minimalista */}
@@ -103,7 +104,7 @@ export default function PaymentMethods() {
 
       {/* Botón de Copiar Externo */}
       <button
-        onClick={() => copiarDatos('012180015538166209', 'bbva')}
+        onClick={() => copiarDatos(TAXI_INFO.bank.clabeRaw, 'bbva')}
         aria-live="polite"
         className={`mt-8 w-full max-w-[360px] py-3.5 px-4 flex items-center justify-center gap-3 rounded-xl transition-all duration-300 text-sm font-semibold active:scale-95 shadow-lg backdrop-blur-sm ${
           copiado === 'bbva'

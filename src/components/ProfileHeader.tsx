@@ -1,14 +1,18 @@
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
+import { TAXI_INFO } from '../config/info';
 
 export default function ProfileHeader() {
+  const [showToast, setShowToast] = useState(false);
+
   // Función para compartir el perfil usando la Web Share API nativa del celular
   const compartirPerfil = async () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Taxi Mary | Tarjeta Digital',
-          text: 'Viajes seguros, rápidos y de absoluta confianza en Tizayuca. ¡Pide tu taxi aquí!',
+          title: `${TAXI_INFO.brandName} | Tarjeta Digital`,
+          text: `Viajes seguros, rápidos y de absoluta confianza en ${TAXI_INFO.coverage}. ¡Pide tu taxi aquí!`,
           url: window.location.href,
         });
       } catch (error) {
@@ -17,7 +21,8 @@ export default function ProfileHeader() {
     } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
       // Fallback para navegadores que no soportan Share API (ej. PC)
       navigator.clipboard.writeText(window.location.href);
-      alert('¡Enlace de la tarjeta copiado al portapapeles!');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     }
   };
 
@@ -70,7 +75,7 @@ export default function ProfileHeader() {
 
       {/* Título Principal con gradiente en movimiento continuo */}
       <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-        Taxi <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-500 to-purple-400 animate-text-gradient drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">Mary</span>
+        {TAXI_INFO.brandName.split(' ')[0]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-500 to-purple-400 animate-text-gradient drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]">{TAXI_INFO.brandName.split(' ').slice(1).join(' ')}</span>
       </h1>
 
       {/* Contenedor de insignias (Estrellas + Compartir) */}
@@ -108,26 +113,13 @@ export default function ProfileHeader() {
         </p>
       </div>
 
-      {/* Estilos CSS integrados para animaciones personalizadas */}
-      <style>{`
-        .animate-float { animation: float 4s ease-in-out infinite; }
-        .animate-spin-slow { animation: spin 4s linear infinite; }
-        .animate-spin-fast { animation: spin 1.5s linear infinite; }
-        .animate-text-gradient {
-          background-size: 200% auto;
-          animation: textGradient 4s linear infinite;
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-        @keyframes textGradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-      `}</style>
+      {/* Toast de notificación de copia en celulares */}
+      {showToast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#0a0a0a]/90 border border-fuchsia-500/30 text-white text-xs font-semibold py-3 px-6 rounded-full shadow-[0_0_25px_rgba(217,70,239,0.35)] backdrop-blur-md flex items-center gap-2 animate-slide-up">
+          <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
+          <span>¡Enlace de tarjeta copiado!</span>
+        </div>
+      )}
     </header>
   );
 }
